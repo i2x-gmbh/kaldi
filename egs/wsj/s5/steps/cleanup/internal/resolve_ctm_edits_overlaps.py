@@ -176,8 +176,7 @@ def resolve_overlaps(ctm_edits, segments):
         """
     total_ctm_edits = []
     if len(ctm_edits) == 0:
-        raise RuntimeError('CTMs for recording is empty. '
-                           'Something wrong with the input ctms')
+        return total_ctm_edits
 
     # First column of first line in CTM for first utterance
     next_utt = ctm_edits[0][0][0]
@@ -308,7 +307,10 @@ def run(args):
         try:
             # Process CTMs in the recordings
             ctm_edits_for_reco = resolve_overlaps(ctm_edits_for_reco, segments)
-            write_ctm_edits(ctm_edits_for_reco, args.ctm_edits_out)
+            if len(ctm_edits_for_reco)==0:
+                warn("No ctm edits for recording %s", reco)
+            else:
+                write_ctm_edits(ctm_edits_for_reco, args.ctm_edits_out)
         except Exception:
             logger.error("Failed to process CTM edits for recording %s",
                          reco)
