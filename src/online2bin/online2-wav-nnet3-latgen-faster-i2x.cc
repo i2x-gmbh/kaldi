@@ -66,8 +66,7 @@ int main(int argc, char *argv[]) {
 
     int32_t return_code = decoder->FeedBytestring(std::string(""));
     KALDI_ASSERT(return_code == 0);
-    RecognitionResult result;
-    return_code = decoder->GetResultAndFinalize(&result);
+    RecognitionResult result = decoder->GetResult();
     KALDI_LOG << utt << ": " << result.transcript;
     KALDI_ASSERT(return_code == 0);
     delete decoder;
